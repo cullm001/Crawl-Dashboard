@@ -17,9 +17,8 @@ const pool = mysql.createPool({
   connectionLimit: 5
 });
 
-// Importing the router correctly
 const insertCrawlRouter = require('./routes/insert-crawl');
-app.use(insertCrawlRouter(pool));  // Pass the pool to the router
+app.use(insertCrawlRouter(pool)); 
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
