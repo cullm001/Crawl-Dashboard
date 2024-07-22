@@ -4,7 +4,7 @@ import time
 import requests
 from datetime import datetime, timedelta
 
-api_endpoint = 'INSERT_ENDPOINT_HERE'  # Update this to your actual endpoint
+api_endpoint = 'INSERT_ENDPOINT_HERE'
 
 def generate_mock_data():
     response_info = []
