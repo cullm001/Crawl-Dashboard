@@ -8,7 +8,6 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 api_endpoint = 'INSERT_ENDPOINT_HERE' 
 
 def generate_mock_data():
-    # Generate unique identifiers once
     crawl_id = f"crawl_{random.randint(1000, 9999)}"
     user_id = f"user_{random.randint(1, 10)}"
     node_ids = [f"node_{random.randint(1000, 9999)}" for _ in range(5)]
