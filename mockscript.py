@@ -15,6 +15,7 @@ def generate_mock_data():
     response_id = f"resp_{random.randint(1000, 9999)}"
     proxy = f"proxy_{random.randint(1, 5)}"
     engine = f"engine_{random.randint(1, 5)}"
+    fingerprint = f"fingerprint_{random.randint(1, 100)}"
 
     response_info = {
         "time": datetime.now().isoformat(),
@@ -22,11 +23,9 @@ def generate_mock_data():
         "request_id": request_id,
         "domain_name": f"domain{random.randint(1, 10)}.com",
         "website_status_code": random.choice([200, 404, 500]),
-        "bytes_downloaded": random.randint(1000, 5000),
         "is_blocked": random.choice([0, 1]),
-        "download_speed": round(random.uniform(0.1, 10.0), 2),
-        "fingerprint": f"fingerprint_{random.randint(1, 100)}",
-        "proxy": proxy
+        "bytes_downloaded": random.randint(1000, 5000),
+        "download_speed": round(random.uniform(0.1, 10.0), 2)
     }
 
     request_info = {
@@ -35,7 +34,7 @@ def generate_mock_data():
         "crawl_id": crawl_id,
         "proxy": proxy,
         "engine": engine,
-        "fingerprint": f"fingerprint_{random.randint(1, 100)}"
+        "fingerprint": fingerprint
     }
 
     node_info = {
@@ -57,11 +56,11 @@ def generate_mock_data():
         "cluster_id": cluster_id,
         "request_time": datetime.now().isoformat(),
         "response_time": (datetime.now() + timedelta(seconds=random.randint(1, 5))).isoformat(),
+        "total_requests": random.randint(100, 1000),
         "requests_per_sec": random.randint(1, 100),
         "concurrent_requests": random.randint(1, 50),
-        "total_requests": random.randint(100, 1000),
-        "avg_cost_per_query": round(random.uniform(0.01, 1.00), 2),
         "estimated_time_to_completion": random.randint(1, 120),
+        "avg_cost_per_query": round(random.uniform(0.01, 1.00), 2),
         "api_status_code": random.choice([200, 404, 500]),
         "success_rate": round(random.uniform(0, 100), 2),
         "error_rate": round(random.uniform(0, 100), 2)
@@ -98,4 +97,4 @@ if __name__ == "__main__":
                     future.result()
                 except Exception as exc:
                     print(f'Generated an exception: {exc}')
-            time.sleep(.5)
+            time.sleep(0.5)
