@@ -5,63 +5,56 @@ import requests
 from datetime import datetime, timedelta
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
-api_endpoint = 'INSERT_ENDPOINT_HERE' 
+api_endpoint = 'INSERT_ENDPOINT_HERE'
 
 def generate_mock_data():
-    # Generate unique identifiers once
     crawl_id = f"crawl_{random.randint(1000, 9999)}"
-    user_id = f"user_{random.randint(1, 10)}"
-    node_ids = [f"node_{random.randint(1000, 9999)}" for _ in range(5)]
-    request_ids = [f"req_{random.randint(1000, 9999)}" for _ in range(10)]
-    response_ids = [f"resp_{random.randint(1000, 9999)}" for _ in range(10)]
-    org_id = f"org_{random.randint(1, 5)}"
+    cluster_id = f"user_{random.randint(1, 10)}"
+    node_id = f"node_{random.randint(1000, 9999)}"
+    request_id = f"req_{random.randint(1000, 9999)}"
+    response_id = f"resp_{random.randint(1000, 9999)}"
     proxy = f"proxy_{random.randint(1, 5)}"
+    engine = f"engine_{random.randint(1, 5)}"
 
-    response_info = []
-    for response_id, request_id in zip(response_ids, request_ids):
-        response_info.append({
-            "time": datetime.now().isoformat(),
-            "response_id": response_id,
-            "request_id": request_id,
-            "domain_name": f"domain{random.randint(1, 10)}.com",
-            "website_status_code": random.choice([200, 404, 500]),
-            "bytes_downloaded": random.randint(1000, 5000),
-            "js_blocked": random.choice([0, 1]),
-            "download_speed": round(random.uniform(0.1, 10.0), 2)
-        })
+    response_info = {
+        "time": datetime.now().isoformat(),
+        "response_id": response_id,
+        "request_id": request_id,
+        "domain_name": f"domain{random.randint(1, 10)}.com",
+        "website_status_code": random.choice([200, 404, 500]),
+        "bytes_downloaded": random.randint(1000, 5000),
+        "is_blocked": random.choice([0, 1]),
+        "download_speed": round(random.uniform(0.1, 10.0), 2),
+        "fingerprint": f"fingerprint_{random.randint(1, 100)}",
+        "proxy": proxy
+    }
 
-    request_info = []
-    for request_id in request_ids:
-        request_info.append({
-            "time": datetime.now().isoformat(),
-            "request_id": request_id,
-            "crawl_id": crawl_id,
-            "proxy": proxy,
-            "org_id": org_id,
-            "fingerprint": f"fingerprint_{random.randint(1, 100)}"
-        })
+    request_info = {
+        "time": datetime.now().isoformat(),
+        "request_id": request_id,
+        "crawl_id": crawl_id,
+        "proxy": proxy,
+        "engine": engine,
+        "fingerprint": f"fingerprint_{random.randint(1, 100)}"
+    }
 
-    node_info = []
-    for node_id in node_ids:
-        node_info.append({
-            "time": datetime.now().isoformat(),
-            "node_id": node_id,
-            "cpu_usage": round(random.uniform(0, 100), 2),
-            "memory_usage": round(random.uniform(0, 100), 2),
-            "bandwidth_usage": round(random.uniform(0, 100), 2),
-            "diskspace_usage": round(random.uniform(0, 100), 2)
-        })
+    node_info = {
+        "time": datetime.now().isoformat(),
+        "node_id": node_id,
+        "cpu_usage": round(random.uniform(0, 100), 2),
+        "memory_usage": round(random.uniform(0, 100), 2),
+        "bandwidth_usage": round(random.uniform(0, 100), 2),
+        "diskspace_usage": round(random.uniform(0, 100), 2)
+    }
 
-    crawl_node = []
-    for node_id in node_ids:
-        crawl_node.append({
-            "crawl_id": crawl_id,
-            "node_id": node_id
-        })
+    crawl_node = {
+        "crawl_id": crawl_id,
+        "node_id": node_id
+    }
 
     crawl_info = {
         "crawl_id": crawl_id,
-        "user_id": user_id,
+        "cluster_id": cluster_id,
         "request_time": datetime.now().isoformat(),
         "response_time": (datetime.now() + timedelta(seconds=random.randint(1, 5))).isoformat(),
         "requests_per_sec": random.randint(1, 100),
