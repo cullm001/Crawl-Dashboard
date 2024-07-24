@@ -7,7 +7,11 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 
 api_endpoint = 'INSERT_ENDPOINT_HERE'
 
+total_requests_counter = 0
+
 def generate_mock_data():
+    global total_requests_counter
+
     crawl_id = f"crawl_{random.randint(1000, 9999)}"
     cluster_id = f"user_{random.randint(1, 10)}"
     node_id = f"node_{random.randint(1000, 9999)}"
@@ -17,14 +21,16 @@ def generate_mock_data():
     engine = f"engine_{random.randint(1, 5)}"
     fingerprint = f"fingerprint_{random.randint(1, 100)}"
 
+    total_requests_counter += 1
+
     response_info = {
         "time": datetime.now().isoformat(),
         "response_id": response_id,
         "request_id": request_id,
         "domain_name": f"domain{random.randint(1, 10)}.com",
         "website_status_code": random.choice([200, 404, 500]),
-        "is_blocked": random.choice([0, 1]),
         "bytes_downloaded": random.randint(1000, 5000),
+        "is_blocked": random.choice([0, 1]),
         "download_speed": round(random.uniform(0.1, 10.0), 2)
     }
 
@@ -53,14 +59,14 @@ def generate_mock_data():
 
     crawl_info = {
         "crawl_id": crawl_id,
-        "cluster_id": cluster_id,
+        "user_id": cluster_id,
         "request_time": datetime.now().isoformat(),
         "response_time": (datetime.now() + timedelta(seconds=random.randint(1, 5))).isoformat(),
-        "total_requests": random.randint(100, 1000),
         "requests_per_sec": random.randint(1, 100),
         "concurrent_requests": random.randint(1, 50),
-        "estimated_time_to_completion": random.randint(1, 120),
+        "total_requests": total_requests_counter, 
         "avg_cost_per_query": round(random.uniform(0.01, 1.00), 2),
+        "estimated_time_to_completion": random.randint(1, 120),
         "api_status_code": random.choice([200, 404, 500]),
         "success_rate": round(random.uniform(0, 100), 2),
         "error_rate": round(random.uniform(0, 100), 2)
@@ -97,4 +103,4 @@ if __name__ == "__main__":
                     future.result()
                 except Exception as exc:
                     print(f'Generated an exception: {exc}')
-            time.sleep(0.5)
+            time.sleep(0.5) 
