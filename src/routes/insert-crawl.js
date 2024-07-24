@@ -6,10 +6,10 @@ module.exports = (pool) => {
   router.post('/insert-crawl', (req, res) => {
 
     //Parses JSON for tabel data
-     const node_info = req.body.node_info[0];
-     const crawl_info = req.body.crawl_info[0];
-     const request_info = req.body.request_info[0];
-     const response_info = req.body.response_info[0];
+     const node_info = req.body.node_info;
+     const crawl_info = req.body.crawl_info;
+     const request_info = req.body.request_info;
+     const response_info = req.body.response_info;
     
     // INSERT node_info table
     const node_info_query = "INSERT INTO node_info (time, node_id, cpu_usage, memory_usage, bandwidth_usage, diskspace_usage) VALUES (?, ?, ?, ?, ?, ?)";
