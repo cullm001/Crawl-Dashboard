@@ -12,7 +12,7 @@ function generate_data() {
 }
 
 export default function () {
-    const url = 'http://localhost:4000/insert-crawl';
+    const url = 'URL_ENDPOINT';
     const payload = JSON.stringify(generate_data());
 
     const params = {
