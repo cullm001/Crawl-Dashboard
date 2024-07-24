@@ -1,18 +1,26 @@
 import http from 'k6/http';
-import {sleep} from 'k6';
+import { sleep } from 'k6';
 
 export const options = {
-    vus: 130,
+    vus: 200,
     duration: '1s',
 };
 
-const payload = JSON.stringify({
-    
-  });
+function generate_data() {
 
+    
+}
 
 export default function () {
+    const url = 'http://localhost:4000/insert-crawl';
+    const payload = JSON.stringify(generate_data());
 
-    http.get('http://localhost:4000/customer_data')
+    const params = {
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    };
 
-  }
+    const res = http.post(url, payload, params);
+
+}
