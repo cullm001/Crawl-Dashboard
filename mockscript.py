@@ -4,13 +4,17 @@ import time
 import requests
 from datetime import datetime, timedelta
 from concurrent.futures import ThreadPoolExecutor, as_completed
+from threading import Lock
 
 api_endpoint = 'INSERT_ENDPOINT_HERE'
 
 total_requests_counter = 0
+requests_per_second_counter = 0
+lock = Lock()
 
 def generate_mock_data():
     global total_requests_counter
+    global requests_per_second_counter
 
     crawl_id = f"crawl_{random.randint(1000, 9999)}"
     cluster_id = f"user_{random.randint(1, 10)}"
@@ -21,7 +25,9 @@ def generate_mock_data():
     engine = f"engine_{random.randint(1, 5)}"
     fingerprint = f"fingerprint_{random.randint(1, 100)}"
 
-    total_requests_counter += 1
+    with lock:
+        total_requests_counter += 1
+        requests_per_second_counter += 1
 
     response_info = {
         "time": datetime.now().isoformat(),
@@ -62,9 +68,9 @@ def generate_mock_data():
         "user_id": cluster_id,
         "request_time": datetime.now().isoformat(),
         "response_time": (datetime.now() + timedelta(seconds=random.randint(1, 5))).isoformat(),
-        "requests_per_sec": random.randint(1, 100),
+        "requests_per_sec": requests_per_second_counter,  # Use the counter for requests per second
         "concurrent_requests": random.randint(1, 50),
-        "total_requests": total_requests_counter, 
+        "total_requests": total_requests_counter,  # Use the counter for total requests
         "avg_cost_per_query": round(random.uniform(0.01, 1.00), 2),
         "estimated_time_to_completion": random.randint(1, 120),
         "api_status_code": random.choice([200, 404, 500]),
@@ -90,11 +96,20 @@ def send_data_to_api(data):
     else:
         print('Failed to send data. Status code:', response.status_code)
 
+def reset_requests_per_second_counter():
+    global requests_per_second_counter
+    while True:
+        time.sleep(1)
+        with lock:
+            requests_per_second_counter = 0
+
 def generate_and_send_data():
     mock_data = generate_mock_data()
     send_data_to_api(mock_data)
 
 if __name__ == "__main__":
+    ThreadPoolExecutor(max_workers=1).submit(reset_requests_per_second_counter)
+    
     while True:
         with ThreadPoolExecutor(max_workers=5) as executor:
             futures = [executor.submit(generate_and_send_data) for _ in range(5)]
