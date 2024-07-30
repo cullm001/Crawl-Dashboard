@@ -18,7 +18,7 @@ const pool = mysql.createPool({
 });
 
 const insertCrawlRouter = require('./routes/insert-crawl');
-app.use(insertCrawlRouter(pool)); 
+app.use('/api',insertCrawlRouter(pool)); 
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
