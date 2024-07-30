@@ -1,42 +1,25 @@
+#!/usr/bin/env python3
+
 import json
 import random
 import time
 import requests
-from datetime import datetime, timedelta
+from datetime import datetime
 from concurrent.futures import ThreadPoolExecutor, as_completed
+from threading import Lock, Event
 
-api_endpoint = 'INSERT_ENDPOINT_HERE'
+api_endpoint = 'API_ENDPOINT'
 
-def generate_mock_data():
-    crawl_id = f"crawl_{random.randint(1000, 9999)}"
-    cluster_id = f"user_{random.randint(1, 10)}"
+total_requests_counter = 0
+successful_requests = 0
+lock = Lock()
+stop_event = Event()
+
+def generate_and_send_data():
+    global total_requests_counter
+    global successful_requests
+
     node_id = f"node_{random.randint(1000, 9999)}"
-    request_id = f"req_{random.randint(1000, 9999)}"
-    response_id = f"resp_{random.randint(1000, 9999)}"
-    proxy = f"proxy_{random.randint(1, 5)}"
-    engine = f"engine_{random.randint(1, 5)}"
-    fingerprint = f"fingerprint_{random.randint(1, 100)}"
-
-    response_info = {
-        "time": datetime.now().isoformat(),
-        "response_id": response_id,
-        "request_id": request_id,
-        "domain_name": f"domain{random.randint(1, 10)}.com",
-        "website_status_code": random.choice([200, 404, 500]),
-        "is_blocked": random.choice([0, 1]),
-        "bytes_downloaded": random.randint(1000, 5000),
-        "download_speed": round(random.uniform(0.1, 10.0), 2)
-    }
-
-    request_info = {
-        "time": datetime.now().isoformat(),
-        "request_id": request_id,
-        "crawl_id": crawl_id,
-        "proxy": proxy,
-        "engine": engine,
-        "fingerprint": fingerprint
-    }
-
     node_info = {
         "time": datetime.now().isoformat(),
         "node_id": node_id,
@@ -46,55 +29,33 @@ def generate_mock_data():
         "diskspace_usage": round(random.uniform(0, 100), 2)
     }
 
-    crawl_node = {
-        "crawl_id": crawl_id,
-        "node_id": node_id
-    }
+    data = {"node_info": node_info}
 
-    crawl_info = {
-        "crawl_id": crawl_id,
-        "cluster_id": cluster_id,
-        "request_time": datetime.now().isoformat(),
-        "response_time": (datetime.now() + timedelta(seconds=random.randint(1, 5))).isoformat(),
-        "total_requests": random.randint(100, 1000),
-        "requests_per_sec": random.randint(1, 100),
-        "concurrent_requests": random.randint(1, 50),
-        "estimated_time_to_completion": random.randint(1, 120),
-        "avg_cost_per_query": round(random.uniform(0.01, 1.00), 2),
-        "api_status_code": random.choice([200, 404, 500]),
-        "success_rate": round(random.uniform(0, 100), 2),
-        "error_rate": round(random.uniform(0, 100), 2)
-    }
-
-    data = {
-        "response_info": response_info,
-        "request_info": request_info,
-        "node_info": node_info,
-        "crawl_node": crawl_node,
-        "crawl_info": crawl_info
-    }
-
-    return data
-
-def send_data_to_api(data):
     headers = {'Content-Type': 'application/json'}
     response = requests.post(api_endpoint, data=json.dumps(data), headers=headers)
-    if response.status_code == 200:
-        print('Data sent successfully.')
-    else:
-        print('Failed to send data. Status code:', response.status_code)
+    with lock:
+        total_requests_counter += 1
+        if response.status_code == 200:
+            successful_requests +=1
 
-def generate_and_send_data():
-    mock_data = generate_mock_data()
-    send_data_to_api(mock_data)
+
+def count_requests_for_one_second():
+    global total_requests_counter
+    start_time = time.time()
+    while time.time() - start_time < 1:
+        time.sleep(0.01) 
+    with lock:
+        print(f"Total requests in one second: {total_requests_counter}")
+        print(f"Successful requests: {successful_requests}")
+    stop_event.set()
 
 if __name__ == "__main__":
-    while True:
-        with ThreadPoolExecutor(max_workers=5) as executor:
-            futures = [executor.submit(generate_and_send_data) for _ in range(5)]
-            for future in as_completed(futures):
-                try:
-                    future.result()
-                except Exception as exc:
-                    print(f'Generated an exception: {exc}')
-            time.sleep(0.5)
+    ThreadPoolExecutor(max_workers=1).submit(count_requests_for_one_second)
+    
+    with ThreadPoolExecutor(max_workers=100) as executor:
+        futures = [executor.submit(generate_and_send_data) for _ in range(1000)]
+        for future in as_completed(futures):
+            try:
+                future.result()
+            except Exception as exc:
+                print(f'Generated an exception: {exc}')
