@@ -1,4 +1,4 @@
-# Crawl-Visualization
+# Crawl-Dashboard
 
 ## Installation
 1. Clone the repository
@@ -26,3 +26,24 @@
  ```bash
    npm app.js
 ```
+2. Send POST requests to the following API Endpoints
+
+   - /api/node_info
+  ```
+{
+  "node_info": {
+    "time": "2024-07-30T11:42:04",
+    "node_id": "node_9099",
+    "cpu_usage": 85.09,
+    "memory_usage": 48.81,
+    "bandwidth_usage": 76.19,
+    "diskspace_usage": 54.06
+  }
+}
+
+```
+   - /api/crawl_info
+   - /api/crawl_node
+   - /api/request_info
+   - /api/response_info
+  
