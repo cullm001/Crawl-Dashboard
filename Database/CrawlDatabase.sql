@@ -1,26 +1,15 @@
--- MySQL Workbench Forward Engineering
 
+-- Set necessary variables
 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
 
--- -----------------------------------------------------
--- Schema mydb
--- -----------------------------------------------------
--- -----------------------------------------------------
--- Schema crawlbee
--- -----------------------------------------------------
+-- Create Database
+CREATE SCHEMA IF NOT EXISTS `"REPLACE WITH DATABASE NAME"` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci;
+USE `"REPLACE WITH DATABASE NAME"`;
 
--- -----------------------------------------------------
--- Schema crawlbee
--- -----------------------------------------------------
-CREATE SCHEMA IF NOT EXISTS `crawlbee` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci ;
-USE `crawlbee` ;
-
--- -----------------------------------------------------
--- Table `crawlbee`.`crawl_info`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `crawlbee`.`crawl_info` (
+-- Create tables
+CREATE TABLE IF NOT EXISTS `crawl_info` (
   `crawl_id` VARCHAR(45) NOT NULL,
   `cluster_id` VARCHAR(45) NULL DEFAULT NULL,
   `request_time` TIMESTAMP NULL DEFAULT NULL,
@@ -38,11 +27,7 @@ ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
 
-
--- -----------------------------------------------------
--- Table `crawlbee`.`node_info`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `crawlbee`.`node_info` (
+CREATE TABLE IF NOT EXISTS `node_info` (
   `time` TIMESTAMP NULL DEFAULT NULL,
   `node_id` VARCHAR(45) NOT NULL,
   `cpu_usage` DECIMAL(4,2) NULL DEFAULT NULL,
@@ -55,11 +40,7 @@ ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
 
-
--- -----------------------------------------------------
--- Table `crawlbee`.`crawl_node`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `crawlbee`.`crawl_node` (
+CREATE TABLE IF NOT EXISTS `crawl_node` (
   `crawl_id` VARCHAR(45) NOT NULL,
   `node_id` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`crawl_id`, `node_id`),
@@ -67,23 +48,19 @@ CREATE TABLE IF NOT EXISTS `crawlbee`.`crawl_node` (
   INDEX `cn_crawl_id_idx` (`crawl_id` ASC) VISIBLE,
   CONSTRAINT `cn_crawl_id`
     FOREIGN KEY (`crawl_id`)
-    REFERENCES `crawlbee`.`crawl_info` (`crawl_id`)
+    REFERENCES `crawl_info` (`crawl_id`)
     ON DELETE CASCADE
     ON UPDATE CASCADE,
   CONSTRAINT `cn_node_id`
     FOREIGN KEY (`node_id`)
-    REFERENCES `crawlbee`.`node_info` (`node_id`)
+    REFERENCES `node_info` (`node_id`)
     ON DELETE CASCADE
     ON UPDATE CASCADE)
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
 
-
--- -----------------------------------------------------
--- Table `crawlbee`.`request_info`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `crawlbee`.`request_info` (
+CREATE TABLE IF NOT EXISTS `request_info` (
   `time` TIMESTAMP NULL DEFAULT NULL,
   `request_id` VARCHAR(45) NOT NULL,
   `crawl_id` VARCHAR(45) NULL DEFAULT NULL,
@@ -95,18 +72,14 @@ CREATE TABLE IF NOT EXISTS `crawlbee`.`request_info` (
   INDEX `request_time_idx` (`time` ASC) VISIBLE,
   CONSTRAINT `fk_req_info_crawl_id`
     FOREIGN KEY (`crawl_id`)
-    REFERENCES `crawlbee`.`crawl_info` (`crawl_id`)
+    REFERENCES `crawl_info` (`crawl_id`)
     ON DELETE CASCADE
     ON UPDATE CASCADE)
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
 
-
--- -----------------------------------------------------
--- Table `crawlbee`.`response_info`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `crawlbee`.`response_info` (
+CREATE TABLE IF NOT EXISTS `response_info` (
   `time` TIMESTAMP NULL DEFAULT NULL,
   `response_id` VARCHAR(45) NOT NULL,
   `request_id` VARCHAR(45) NULL,
@@ -120,14 +93,14 @@ CREATE TABLE IF NOT EXISTS `crawlbee`.`response_info` (
   INDEX `resp_info_time_idx` (`time` ASC) VISIBLE,
   CONSTRAINT `fk_resp_info_req_id`
     FOREIGN KEY (`request_id`)
-    REFERENCES `crawlbee`.`request_info` (`request_id`)
+    REFERENCES `request_info` (`request_id`)
     ON DELETE CASCADE
     ON UPDATE CASCADE)
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
 
-
+-- Restore variables to original state
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
