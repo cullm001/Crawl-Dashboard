@@ -3,8 +3,8 @@
 ## Table of Contents
  - [Prerequisites](#prerequisites)
  - [Installation](#installation)
-  - [Server](#server)
-  - [Database](#database)
+   - [Server](#server)
+   - [Database](#database)
  - [Usage](#usage)
 ## Prerequisites
 1. Install [node.js and npm](https://nodejs.org/en/download/package-manager)
