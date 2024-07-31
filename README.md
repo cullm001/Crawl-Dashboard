@@ -1,31 +1,3 @@
-# Crawl-Dashboard
-
-## Database Setup
-1. Install MySQL Server
-```bash
-   sudo apt install mysql-server
-```
-2. Log in to MySQL
-```bash
-   mysql -u 'username' -p
-```
-3. Download / Copy MySQL script
-[Setup Script](Database/CrawlDatabase.sql)
-
-4. Change ' "REPLACE WITH DATABASE NAME" ' section with desired database name
-
-6. Paste script into MySQL command line interface
-
-6. Verify setup
-```bash
-   SHOW DATABASES;
-```
-```bash
-   USE 'database_name';
-```
-```bash
-   SHOW TABLES;
-```
 
 ## Installation
 1. Clone the repository
