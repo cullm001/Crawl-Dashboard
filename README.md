@@ -9,11 +9,13 @@
 ```bash
    cd Crawl-Dashboard
 ```
-3. Install dependencies
+3. Install [node.js](https://nodejs.org/en/download/package-manager)
+
+4. Install dependencies
  ```bash
    npm install
 ```  
-4. Create an .env file in the root directory with following variables
+5. Create an .env file with following variables
 ```env
   USERNAME=
   HOST=
@@ -27,9 +29,8 @@
    npm app.js
 ```
 2. Send POST requests to the following API Endpoints
-
    - /api/node_info
-  ```
+```json
 {
   "node_info": {
     "time": "2024-07-30T11:42:04",
@@ -42,8 +43,4 @@
 }
 
 ```
-   - /api/crawl_info
-   - /api/crawl_node
-   - /api/request_info
-   - /api/response_info
-  
+
