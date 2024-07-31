@@ -1,6 +1,20 @@
 # Crawl-Dashboard
 
+## Table of Contents
+ - [Prerequisites](#prerequisites)
+ - [Installation](#installation)
+ - [Usage](#usage)
+## Prerequisites
+1. Install [node.js and npm](https://nodejs.org/en/download/package-manager)
+
+2. Install MySQL Server
+```bash
+   sudo apt install mysql-server
+```
 ## Installation
+
+### Server Setup
+
 1. Clone the repository
 ```bash
    git clone https://github.com/cullm001/Crawl-Dashboard.git
@@ -9,18 +23,36 @@
 ```bash
    cd Crawl-Dashboard
 ```
-3. Install [node.js](https://nodejs.org/en/download/package-manager)
 
-4. Install dependencies
+3. Install dependencies
  ```bash
    npm install
 ```  
-5. Create an .env file with following variables
+4. Create an .env file with following variables
 ```env
   USERNAME=
   HOST=
   DATABASE=
   PASSWORD=
+```
+
+### Database Setup
+1. Log in to MySQL
+```bash
+   mysql -u root -p
+```
+2. Create a Database
+```bash
+   CREATE DATABASE database_name;
+   USE database_name;
+```
+3. Run SQL Script
+```bash
+   SOURCE Database/CrawlDatabase.sql;
+```
+4. Verify setup
+```bash
+   SHOW TABLES;
 ```
 
 ## Usage
@@ -42,28 +74,4 @@
   }
 }
 ```
-
-## Database Setup
-1. Install MySQL Server
-```bash
-   sudo apt install mysql-server
-```
-2. Log in to MySQL
-```bash
-   mysql -u root -p
-```
-3. Create a Database
-```bash
-   CREATE DATABASE database_name;
-   USE database_name;
-```
-4. Run SQL Script
-```bash
-   SOURCE Database/CrawlDatabase.sql;
-```
-5. Verify setup
-```bash
-   SHOW TABLES;
-```
-
 
