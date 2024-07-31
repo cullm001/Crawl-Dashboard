@@ -3,6 +3,8 @@
 ## Table of Contents
  - [Prerequisites](#prerequisites)
  - [Installation](#installation)
+  - [Server](#server)
+  - [Database](#database)
  - [Usage](#usage)
 ## Prerequisites
 1. Install [node.js and npm](https://nodejs.org/en/download/package-manager)
@@ -13,7 +15,7 @@
 ```
 ## Installation
 
-### Server Setup
+### Server
 
 1. Clone the repository
 ```bash
@@ -36,7 +38,7 @@
   PASSWORD=
 ```
 
-### Database Setup
+### Database
 1. Log in to MySQL
 ```bash
    mysql -u root -p
