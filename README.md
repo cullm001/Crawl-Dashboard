@@ -26,7 +26,7 @@
 ## Usage
 1. Run the Express server
  ```bash
-   npm app.js
+   node app.js
 ```
 2. Send POST requests to the following API Endpoints
    - /api/node_info
