@@ -63,17 +63,73 @@
    node app.js
 ```
 2. Send POST requests to the following API Endpoints
-   - /api/node_info
+ - /api/node_info
 ```json
 {
   "node_info": {
-    "time": "2024-07-30T11:42:04",
-    "node_id": "node_9099",
-    "cpu_usage": 85.09,
-    "memory_usage": 48.81,
-    "bandwidth_usage": 76.19,
-    "diskspace_usage": 54.06
+    "time": "2024-07-31T11:09:06.597383",
+    "node_id": "node_9871",
+    "cpu_usage": 32.64,
+    "memory_usage": 54.11,
+    "bandwidth_usage": 94.05,
+    "diskspace_usage": 50.53
+  }
+}
+```
+ - /api/crawl_info
+ ```json
+{
+  "crawl_info": {
+    "crawl_id": "crawl_6863",
+    "cluster_id": "user_8",
+    "request_time": "2024-07-31T11:09:06.597389",
+    "response_time": "2024-07-31T11:09:07.597391",
+    "total_requests": 332,
+    "requests_per_sec": 67,
+    "concurrent_requests": 18,
+    "estimated_time_to_completion": 50,
+    "avg_cost_per_query": 0.87,
+    "api_status_code": 404,
+    "success_rate": 9.75,
+    "error_rate": 71.42
+  }
+}
+```
+- /api/crawl_node
+```json
+{
+  "crawl_node": {
+    "crawl_id": "crawl_6863",
+    "node_id": "node_9871"
   }
 }
 ```
 
+- /api/request_info
+```json
+{
+  "request_info": {
+    "time": "2024-07-31T11:09:06.597381",
+    "request_id": "req_9779",
+    "crawl_id": "crawl_6863",
+    "proxy": "proxy_3",
+    "engine": "engine_5",
+    "fingerprint": "fingerprint_29"
+  }
+}
+```
+- /appi/response_info
+```json
+{
+  "response_info": {
+    "time": "2024-07-31T11:09:06.597360",
+    "response_id": "resp_9272",
+    "request_id": "req_9779",
+    "domain_name": "domain3.com",
+    "website_status_code": 404,
+    "is_blocked": 0,
+    "bytes_downloaded": 3333,
+    "download_speed": 6.22
+  }
+}
+```
