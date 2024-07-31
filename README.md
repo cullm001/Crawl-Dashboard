@@ -24,7 +24,7 @@
    USE 'database_name';
 ```
 ```bash
-  SHOW TABLES;
+   SHOW TABLES;
 ```
 
 ## Installation
