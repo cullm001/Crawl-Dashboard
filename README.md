@@ -55,16 +55,13 @@
 3. Create a Database
 ```bash
    CREATE DATABASE database_name;
-```
-4. Use Database
-```bash
    USE database_name;
 ```
-5. Run SQL Script
+4. Run SQL Script
 ```bash
    SOURCE Database/CrawlDatabase.sql;
 ```
-6. Verify setup
+5. Verify setup
 ```bash
    SHOW TABLES;
 ```
