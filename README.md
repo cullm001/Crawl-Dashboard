@@ -118,7 +118,7 @@
   }
 }
 ```
-- /appi/response_info
+- /api/response_info
 ```json
 {
   "response_info": {
