@@ -17,6 +17,6 @@ jobs:
       - name: Run local k6 test
         uses: grafana/run-k6-action@v1
         with:
-          path: tests/performance-test.js
+          path: tests/performance_test.js
         env:
           API_ENDPOINT: ${{ secrets.API_ENDPOINT }}
