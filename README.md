@@ -6,6 +6,9 @@
    - [Server](#server)
    - [Database](#database)
  - [Usage](#usage)
+ - [Testing](#usage)
+   - [Grafana k6](#grafana-k6)
+   - [GitHub Actions](#github-actions)
 ## Prerequisites
 1. Install [node.js and npm](https://nodejs.org/en/download/package-manager)
 
@@ -133,3 +136,49 @@
   }
 }
 ```
+## Testing
+### Grafana k6 
+1. Install k6 [here](https://k6.io/docs/get-started/installation/)
+2. Navigate to tests directory
+```bash
+cd tests
+```
+3. Configure API endpoint variable
+```
+export API_ENDPOINT= "INSERT_API_ENDPOINT"
+```
+4. Run the k6 script
+```bash
+k6 run performance.js
+```
+<img width="878" alt="Screen Shot 2024-08-02 at 2 00 59 AM" src="https://github.com/user-attachments/assets/5fb67f17-d62f-4f57-bc1e-9ffcb89cc611">
+
+
+
+### GitHub Actions 
+1. Navigate to the Actions tab
+2. Create a new workflow
+3. Configure the workflow according to [documentation](https://grafana.com/blog/2024/07/15/performance-testing-with-grafana-k6-and-github-actions/)
+```yaml
+name: k6 Load Test
+
+on:
+  push:
+    branches:
+      - '**'
+
+jobs:
+  run-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup K6
+        uses: grafana/setup-k6-action@v1
+      - name: Run local k6 test
+        uses: grafana/run-k6-action@v1
+        with:
+          path: test.js
+```
+4. Commit the workflow
