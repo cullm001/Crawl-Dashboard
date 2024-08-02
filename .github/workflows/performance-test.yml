@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - 'cullm001/**'
+  pull_request:
+    branches:
+      - 'cullm001/**'
 
 jobs:
   run-test:
