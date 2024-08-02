@@ -1,9 +1,6 @@
 name: k6 Performance Test
 
 on:
-  push:
-    branches:
-      - 'cullm001/**'
   pull_request:
     branches:
       - 'cullm001/**'
