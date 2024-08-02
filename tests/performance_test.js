@@ -1,4 +1,6 @@
 import http from 'k6/http';
+import {check} from 'k6';
+
 
 export const options = {
     vus: 100,
@@ -28,5 +30,9 @@ export default function () {
     };
 
     const res = http.post(url, payload, params);
+    check (res, {
+        'is status 200' : (r)=>r.status ===200,
+        'payload inserted successfully' : (r) => r.body.includes("node_info inserted successfully")
+    });
 
 }
