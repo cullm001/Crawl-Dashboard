@@ -1,7 +1,7 @@
 name: k6 Performance Test
 
 on:
-  pull_request:
+  push:
     branches:
       - 'cullm001/**'
 
@@ -30,6 +30,13 @@ jobs:
             -e DATABASE=${{ secrets.DATABASE }} \
             -e PASSWORD=${{ secrets.PASSWORD }} \
             --name my-server cullm001/server-1.0
+
+      - name: Wait for server to start
+        run: |
+          until curl -s http://localhost:3000; do
+            echo "Waiting for server to start..."
+            sleep 5
+          done
 
       - name: Setup K6
         uses: grafana/setup-k6-action@v1
