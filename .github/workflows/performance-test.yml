@@ -1,19 +1,35 @@
 name: k6 Performance Test
 
 on:
-  push:
-    branches:
-      - 'cullm001/**'
   pull_request:
     branches:
       - 'cullm001/**'
 
 jobs:
-  run-test:
+  build-and-test:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16' 
+
+      - name: Build Docker image
+        run: |
+          docker build -t cullm001/server-1.0 .
+
+      - name: Run Docker container
+        run: |
+          docker run -d -p 3000:3000 \
+            -e USERNAME=${{ secrets.USERNAME }} \
+            -e HOST=${{ secrets.HOST }} \
+            -e DATABASE=${{ secrets.DATABASE }} \
+            -e PASSWORD=${{ secrets.PASSWORD }} \
+            --name my-server cullm001/server-1.0
 
       - name: Setup K6
         uses: grafana/setup-k6-action@v1
@@ -23,4 +39,9 @@ jobs:
         with:
           path: tests/performance_test.js
         env:
-          API_ENDPOINT: ${{ secrets.API_ENDPOINT }}
+          API_ENDPOINT: http://localhost:3000/api/node_info
+
+      - name: Stop Docker container
+        run: |
+          docker stop my-server
+          docker rm my-server
