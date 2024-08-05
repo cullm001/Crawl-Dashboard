@@ -5,9 +5,9 @@
 ![image](https://github.com/user-attachments/assets/8697304e-2f5f-42dc-bea1-e6427702c6c4)
 ### Crawl Statistics
 ![image](https://github.com/user-attachments/assets/84e0a45e-bbce-4edc-b3cb-e81f855ae7af)
-### Cluster Statiscs
+### Cluster Statistics
 ![image](https://github.com/user-attachments/assets/a4773226-4d55-438e-9967-6ae64c03ce3f)
-### Response Times across Domains
+### Response Times Across Domains
 ![image](https://github.com/user-attachments/assets/a9ffe184-66a7-42bc-9775-81ee722675f9)
 
 ## Table of Contents
