@@ -1,42 +1,41 @@
 
-
 -- Set necessary variables
 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
 
-
 -- Create tables
 CREATE TABLE IF NOT EXISTS `crawl_info` (
   `crawl_id` VARCHAR(45) NOT NULL,
   `cluster_id` VARCHAR(45) NULL DEFAULT NULL,
-  `request_time` TIMESTAMP NULL DEFAULT NULL,
-  `response_time` TIMESTAMP NULL DEFAULT NULL,
   `total_requests` INT NULL DEFAULT NULL,
   `requests_per_sec` INT NULL DEFAULT NULL,
   `concurrent_requests` INT NULL DEFAULT NULL,
-  `estimated_time_to_complete` INT NULL DEFAULT NULL,
-  `avg_cost_per_query` DECIMAL(5,2) NULL DEFAULT NULL,
   `api_status_code` INT NULL DEFAULT NULL,
-  `success_rate` DECIMAL(4,2) NULL DEFAULT NULL,
-  `error_rate` DECIMAL(4,2) NULL DEFAULT NULL,
-  PRIMARY KEY (`crawl_id`))
+  `cost` DECIMAL(5,2) NULL DEFAULT NULL,
+  `domain_name` VARCHAR(45) NULL DEFAULT NULL,
+  PRIMARY KEY (`crawl_id`),
+  INDEX `cluster_id_idx` (`cluster_id` ASC) VISIBLE)
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
 
+
 CREATE TABLE IF NOT EXISTS `node_info` (
   `time` TIMESTAMP NULL DEFAULT NULL,
-  `node_id` VARCHAR(45) NOT NULL,
+  `id` INT NOT NULL,
+  `node_id` VARCHAR(45) NULL DEFAULT NULL,
   `cpu_usage` DECIMAL(4,2) NULL DEFAULT NULL,
   `memory_usage` DECIMAL(4,2) NULL DEFAULT NULL,
   `bandwidth_usage` DECIMAL(4,2) NULL DEFAULT NULL,
   `diskspace_usage` DECIMAL(4,2) NULL DEFAULT NULL,
-  PRIMARY KEY (`node_id`),
-  INDEX `node_info_time_idx` (`time` ASC) VISIBLE)
+  PRIMARY KEY (`id`),
+  INDEX `node_info_time_idx` (`time` ASC) VISIBLE,
+  INDEX `node_id_idx` (`node_id` ASC) INVISIBLE)
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
+
 
 CREATE TABLE IF NOT EXISTS `crawl_node` (
   `crawl_id` VARCHAR(45) NOT NULL,
@@ -58,6 +57,7 @@ ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
 
+
 CREATE TABLE IF NOT EXISTS `request_info` (
   `time` TIMESTAMP NULL DEFAULT NULL,
   `request_id` VARCHAR(45) NOT NULL,
@@ -77,18 +77,26 @@ ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
 
+
 CREATE TABLE IF NOT EXISTS `response_info` (
   `time` TIMESTAMP NULL DEFAULT NULL,
   `response_id` VARCHAR(45) NOT NULL,
-  `request_id` VARCHAR(45) NULL,
-  `domain_name` VARCHAR(45) NULL DEFAULT NULL,
-  `website_status_code` INT NULL DEFAULT NULL,
+  `request_id` VARCHAR(45) NULL DEFAULT NULL,
+  `web_status_code` INT NULL DEFAULT NULL,
   `is_blocked` BINARY(1) NULL DEFAULT NULL,
   `bytes_downloaded` INT NULL DEFAULT NULL,
   `download_speed` DECIMAL(5,2) NULL DEFAULT NULL,
+  `crawl_id` VARCHAR(45) NULL DEFAULT NULL,
+  `response_time` DECIMAL(5,2) NULL,
   PRIMARY KEY (`response_id`),
   INDEX `fk_resp_info_req_id_idx` (`request_id` ASC) INVISIBLE,
-  INDEX `resp_info_time_idx` (`time` ASC) VISIBLE,
+  INDEX `resp_info_time_idx` (`time` ASC) INVISIBLE,
+  INDEX `fk_resp_info_crawlid_idx` (`crawl_id` ASC) VISIBLE,
+  CONSTRAINT `fk_resp_info_crawl_id`
+    FOREIGN KEY (`crawl_id`)
+    REFERENCES `crawl_info` (`crawl_id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
   CONSTRAINT `fk_resp_info_req_id`
     FOREIGN KEY (`request_id`)
     REFERENCES `request_info` (`request_id`)
