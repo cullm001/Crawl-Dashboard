@@ -146,35 +146,32 @@
    node app.js
 ```
 2. Send POST requests to the following API Endpoints
- - /api/node_info
+ - /api/crawl_info
 ```json
 {
-  "node_info": {
-    "time": "2024-07-31T11:09:06.597383",
-    "node_id": "node_9871",
-    "cpu_usage": 32.64,
-    "memory_usage": 54.11,
-    "bandwidth_usage": 94.05,
-    "diskspace_usage": 50.53
+  "crawl_info": {
+    "crawl_id": 1,
+    "cluster_id": "cluster_2",
+    "total_requests": 624,
+    "requests_per_sec": 11,
+    "concurrent_requests": 49,
+    "api_status_code": 500,
+    "cost": 11,
+    "domain_name": "domain4.com"
   }
 }
 ```
- - /api/crawl_info
+ - /api/node_info
  ```json
 {
-  "crawl_info": {
-    "crawl_id": "crawl_6863",
-    "cluster_id": "user_8",
-    "request_time": "2024-07-31T11:09:06.597389",
-    "response_time": "2024-07-31T11:09:07.597391",
-    "total_requests": 332,
-    "requests_per_sec": 67,
-    "concurrent_requests": 18,
-    "estimated_time_to_completion": 50,
-    "avg_cost_per_query": 0.87,
-    "api_status_code": 404,
-    "success_rate": 9.75,
-    "error_rate": 71.42
+  "node_info": {
+    "time": "2024-08-05T19:36:33.630242",
+    "id": 0,
+    "node_id": 10,
+    "cpu_usage": 68.84,
+    "memory_usage": 60.86,
+    "bandwidth_usage": 1.75,
+    "diskspace_usage": 30.52
   }
 }
 ```
@@ -182,8 +179,8 @@
 ```json
 {
   "crawl_node": {
-    "crawl_id": "crawl_6863",
-    "node_id": "node_9871"
+    "crawl_id": 1,
+    "node_id": 10
   }
 }
 ```
@@ -192,12 +189,12 @@
 ```json
 {
   "request_info": {
-    "time": "2024-07-31T11:09:06.597381",
-    "request_id": "req_9779",
-    "crawl_id": "crawl_6863",
+    "time": "2024-08-05T19:36:33.813056",
+    "request_id": 0,
+    "crawl_id": 1,
     "proxy": "proxy_3",
-    "engine": "engine_5",
-    "fingerprint": "fingerprint_29"
+    "engine": "engine_1",
+    "fingerprint": "fingerprint_75"
   }
 }
 ```
@@ -205,14 +202,15 @@
 ```json
 {
   "response_info": {
-    "time": "2024-07-31T11:09:06.597360",
-    "response_id": "resp_9272",
-    "request_id": "req_9779",
-    "domain_name": "domain3.com",
-    "website_status_code": 404,
+    "time": "2024-08-05T19:36:33.904178",
+    "response_id": 0,
+    "request_id": 0,
+    "web_status_code": 500,
     "is_blocked": 0,
-    "bytes_downloaded": 3333,
-    "download_speed": 6.22
+    "bytes_downloaded": 2010,
+    "download_speed": 5.77,
+    "crawl_id": 1,
+    "response_time": 1.61
   }
 }
 ```
