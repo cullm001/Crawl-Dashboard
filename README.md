@@ -1,3 +1,4 @@
+
 # Crawl-Dashboard
 
 ### Aggregate Statistics
@@ -38,17 +39,22 @@
    cd Crawl-Dashboard
 ```
 
-3. Install dependencies
+
+3. Install [node.js](https://nodejs.org/en/download/package-manager)
+
+4. Install dependencies
  ```bash
    npm install
 ```  
-4. Create an .env file with following variables
+5. Create an .env file with following variables
+
 ```env
   USERNAME=
   HOST=
   DATABASE=
   PASSWORD=
 ```
+
 
 ### Database
 1. Log in to MySQL
@@ -337,3 +343,4 @@ jobs:
 5. View results in Actions Tab
 
 <img width="1261" alt="Screen Shot 2024-08-05 at 11 26 31 AM" src="https://github.com/user-attachments/assets/8b4beaa4-b13d-4d73-a153-c91dfa79e86e">
+
