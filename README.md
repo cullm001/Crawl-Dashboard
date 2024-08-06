@@ -68,7 +68,7 @@
 ```
 3. Run SQL Script
 ```bash
-   SOURCE Database/CrawlDatabase.sql;
+   SOURCE path/to/CrawlDatabase.sql;
 ```
 4. Verify setup
 ```bash
