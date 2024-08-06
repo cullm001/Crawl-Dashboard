@@ -37,8 +37,8 @@ CREATE TABLE `node_info` (
   CONSTRAINT `fk_node_crawlid`
     FOREIGN KEY (`crawl_id`)
     REFERENCES `crawl_info` (`crawl_id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
