@@ -5,9 +5,9 @@
 ![image](https://github.com/user-attachments/assets/8697304e-2f5f-42dc-bea1-e6427702c6c4)
 ### Crawl Statistics
 ![image](https://github.com/user-attachments/assets/84e0a45e-bbce-4edc-b3cb-e81f855ae7af)
-### Cluster Statiscs
+### Cluster Statistics
 ![image](https://github.com/user-attachments/assets/a4773226-4d55-438e-9967-6ae64c03ce3f)
-### Response Times across Domains
+### Response Times Across Domains
 ![image](https://github.com/user-attachments/assets/a9ffe184-66a7-42bc-9775-81ee722675f9)
 
 ## Table of Contents
@@ -68,7 +68,7 @@
 ```
 3. Run SQL Script
 ```bash
-   SOURCE Database/CrawlDatabase.sql;
+   SOURCE path/to/CrawlDatabase.sql;
 ```
 4. Verify setup
 ```bash
@@ -270,75 +270,3 @@ k6 run performance.js
 
 
 <img width="1193" alt="Screen Shot 2024-08-05 at 11 27 52 AM" src="https://github.com/user-attachments/assets/ab20f5aa-6d9e-4d0b-b1ae-bb0c62c9532a">
-
-### GitHub Actions 
-1. Set up GitHub Secrets with the following variables
-    - USERNAME
-    - PASSWORD
-    - HOST
-    - DATABASE
-
-
-2. Create a new workflow
-3. Configure the workflow according to [documentation](https://grafana.com/blog/2024/07/15/performance-testing-with-grafana-k6-and-github-actions/)
-```yaml
-name: k6 Performance Test
-
-on:
-  push:
-    branches:
-      - '<your-branch-pattern>'
-
-jobs:
-  build-and-test:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '<your-node-version>'
-
-      - name: Build Docker image
-        run: |
-          docker build -t <your-docker-image-name>:<your-image-tag> .
-
-      - name: Run Docker container
-        run: |
-          docker run -d -p <your-port>:<container-port> \
-            -e USERNAME=${{ secrets.USERNAME }} \
-            -e HOST=${{ secrets.HOST }} \
-            -e DATABASE=${{ secrets.DATABASE }} \
-            -e PASSWORD=${{ secrets.PASSWORD }} \
-            --name <your-container-name> <your-docker-image-name>:<your-image-tag>
-
-      - name: Wait for server to start
-        run: |
-          until curl -s http://localhost:<your-port>; do
-            echo "Waiting for server to start..."
-            sleep 5
-          done
-
-      - name: Setup K6
-        uses: grafana/setup-k6-action@v1
-
-      - name: Run k6 test
-        uses: grafana/run-k6-action@v1
-        with:
-          path: <your-test-file-path>
-        env:
-          API_ENDPOINT: http://localhost:<your-port>/<your-api-endpoint>
-
-      - name: Stop Docker container
-        run: |
-          docker stop <your-container-name>
-          docker rm <your-container-name>
-```
-4. Commit the workflow
-5. View results in Actions Tab
-
-<img width="1261" alt="Screen Shot 2024-08-05 at 11 26 31 AM" src="https://github.com/user-attachments/assets/8b4beaa4-b13d-4d73-a153-c91dfa79e86e">
-
