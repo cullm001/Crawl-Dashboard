@@ -150,13 +150,13 @@
 ```json
 {
   "crawl_info": {
-    "crawl_id": 1,
-    "cluster_id": "cluster_2",
-    "total_requests": 624,
-    "requests_per_sec": 11,
-    "concurrent_requests": 49,
-    "api_status_code": 500,
-    "cost": 11,
+    "crawl_id": 7,
+    "cluster_id": "cluster_3",
+    "total_requests": 997,
+    "requests_per_sec": 75,
+    "concurrent_requests": 25,
+    "api_status_code": 404,
+    "cost": 39,
     "domain_name": "domain4.com"
   }
 }
@@ -165,22 +165,13 @@
  ```json
 {
   "node_info": {
-    "time": "2024-08-05T19:36:33.630242",
-    "id": 0,
-    "node_id": 10,
-    "cpu_usage": 68.84,
-    "memory_usage": 60.86,
-    "bandwidth_usage": 1.75,
-    "diskspace_usage": 30.52
-  }
-}
-```
-- /api/crawl_node
-```json
-{
-  "crawl_node": {
-    "crawl_id": 1,
-    "node_id": 10
+    "time": "2024-08-07T19:28:37.349252",
+    "node_id": "7-0",
+    "cpu_usage": 72.22,
+    "memory_usage": 18.1,
+    "bandwidth_usage": 68.15,
+    "diskspace_usage": 38.36,
+    "crawl_id": 7
   }
 }
 ```
@@ -189,12 +180,12 @@
 ```json
 {
   "request_info": {
-    "time": "2024-08-05T19:36:33.813056",
-    "request_id": 0,
-    "crawl_id": 1,
-    "proxy": "proxy_3",
-    "engine": "engine_1",
-    "fingerprint": "fingerprint_75"
+    "time": "2024-08-07T19:28:37.438950",
+    "request_id": "7-0",
+    "crawl_id": 7,
+    "proxy": "proxy_2",
+    "engine": "engine_2",
+    "fingerprint": "fingerprint_12"
   }
 }
 ```
@@ -202,15 +193,15 @@
 ```json
 {
   "response_info": {
-    "time": "2024-08-05T19:36:33.904178",
-    "response_id": 0,
-    "request_id": 0,
+    "time": "2024-08-07T19:28:37.531075",
+    "response_id": "7-0",
+    "request_id": "7-0",
+    "crawl_id": 7,
     "web_status_code": 500,
     "is_blocked": 0,
-    "bytes_downloaded": 2010,
-    "download_speed": 5.77,
-    "crawl_id": 1,
-    "response_time": 1.61
+    "bytes_downloaded": 4124,
+    "download_speed": 7.42,
+    "response_time": 2.5
   }
 }
 ```
