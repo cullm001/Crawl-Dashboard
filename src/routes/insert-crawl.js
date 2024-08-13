@@ -4,6 +4,8 @@ module.exports = (pool) => {
   const router = express.Router();
 
   router.post('/node_info', (req, res) => {
+    
+
     const node_info_query = "INSERT INTO node_info (time,  node_id, cpu_usage, memory_usage, bandwidth_usage, diskspace_usage, crawl_id) VALUES ( ?, ?, ?, ?, ?, ?, ?)";
     pool.query(node_info_query, [req.body.time, req.body.node_id, req.body.cpu_usage, req.body.memory_usage, req.body.bandwidth_usage, req.body.diskspace_usage, req.body.crawl_id], (err, nodeResult) => {
       if (err) {
@@ -16,17 +18,41 @@ module.exports = (pool) => {
   });
 
   router.post('/crawl_info', (req, res) => {
-    const crawl_info_query = "INSERT INTO crawl_info (crawl_id, cluster_id, total_requests, requests_per_sec, concurrent_requests, api_status_code, cost, domain_name) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-    pool.query(crawl_info_query, [req.body.crawl_id, req.body.cluster_id, req.body.total_requests, req.body.requests_per_sec, req.body.concurrent_requests, req.body.api_status_code, req.body.cost, req.body.domain_name], (err, crawlResult) => {
+
+    isDuplicate = false;
+    const check_dup_query = "SELECT COUNT(*) FROM crawl_info WHERE crawl_id = ?";
+    pool.query(check_dup_query, [req.body.crawl_id], (err, dupResult) => {
+      console.log(dupResult[0]['COUNT(*)']);
+      if (dupResult[0]['COUNT(*)'] > 0){
+        isDuplicate = true;
+      }
+    });
+  
+    const crawl_info_query = `
+      INSERT INTO crawl_info (crawl_id, cluster_id, total_requests, requests_per_sec, concurrent_requests, cost, domain_name)
+      VALUES (?, ?, ?, ?, ?, ?, ?)
+      ON DUPLICATE KEY UPDATE
+        cluster_id = VALUES(cluster_id),
+        total_requests = VALUES(total_requests),
+        requests_per_sec = VALUES(requests_per_sec),
+        concurrent_requests = VALUES(concurrent_requests),
+        cost = VALUES(cost),
+        domain_name = VALUES(domain_name);
+    `;
+    pool.query(crawl_info_query, [req.body.crawl_id, req.body.cluster_id, req.body.total_requests, req.body.requests_per_sec, req.body.concurrent_requests, req.body.cost, req.body.domain_name], (err, crawlResult) => {
       if (err) {
         console.error('Error inserting into crawl_info:', err);
         res.status(500).send('Error inserting crawl_info');
         return;
       }
-      res.send("crawl_info inserted successfully");
+
+      if (isDuplicate)
+        res.send("Warning: duplicate crawl inserted")
+      else
+        res.send("crawl_info inserted successfully");
     });
   });
-
+  
 
   router.post('/request_info', (req, res) => {
     const request_info_query = "INSERT INTO request_info (time, request_id, crawl_id, proxy, engine, fingerprint) VALUES (?, ?, ?, ?, ?, ?)";
@@ -42,9 +68,9 @@ module.exports = (pool) => {
   });
 
   router.post('/response_info', (req, res) => {
-    const response_info_query = "INSERT INTO response_info (time, response_id, request_id, crawl_id, web_status_code, is_blocked, bytes_downloaded, download_speed, response_time) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    const response_info_query = "INSERT INTO response_info (time, response_id, request_id, crawl_id, http_status_code, is_blocked, bytes_downloaded, download_speed, response_time) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
     pool.query(response_info_query, [
-      req.body.time, req.body.response_id, req.body.request_id, req.body.crawl_id, req.body.web_status_code, req.body.is_blocked, req.body.bytes_downloaded, req.body.download_speed, req.body.response_time], (err, responseResult) => {
+      req.body.time, req.body.response_id, req.body.request_id, req.body.crawl_id, req.body.http_status_code, req.body.is_blocked, req.body.bytes_downloaded, req.body.download_speed, req.body.response_time], (err, responseResult) => {
       if (err) {
         console.error('Error inserting into response_info:', err);
         res.status(500).send('Error inserting response_info');
