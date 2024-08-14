@@ -45,13 +45,11 @@ Crawl-Dashboard is a dashboard designed to monitor and visualize web crawling ac
 ```
 
 
-3. Install [node.js](https://nodejs.org/en/download/package-manager)
-
-4. Install dependencies
+3. Install dependencies
  ```bash
    npm install
 ```  
-5. Create an .env file with following variables
+4. Create an .env file with following variables
 
 ```env
   USERNAME=
@@ -155,41 +153,26 @@ Crawl-Dashboard is a dashboard designed to monitor and visualize web crawling ac
  - This endpoint is used to log the overall statistics of a web crawl, such as the total number of requests, concurrent requests, and related metadata. Call this endpoint once per crawl. Ideally, this should be done at the start of a crawl to initialize the crawl record and again at the end of the crawl to finalize the statistics.
 ```json
 {
-  "crawl_info": {
     "crawl_id": 1,
-    "cluster_id": "cluster_2",
-    "total_requests": 624,
-    "requests_per_sec": 11,
-    "concurrent_requests": 49,
-    "api_status_code": 500,
-    "cost": 11,
+    "cluster_id": "cluster_9",
+    "total_requests": 1000,
+    "requests_per_sec": 75,
+    "concurrent_requests": 25,
+    "cost": 39,
     "domain_name": "domain4.com"
-  }
 }
 ```
  - /api/node_info
  - This endpoint records the resource usage of individual nodes involved in the crawl, including CPU, memory, bandwidth, and disk space. Call this endpoint periodically during a crawl. The frequency can vary depending on how detailed you want your monitoring to be. For example, you might call it every 5 minutes during active crawling periods to capture resource usage trends.
  ```json
 {
-  "node_info": {
-    "time": "2024-08-05T19:36:33.630242",
-    "id": 0,
-    "node_id": 10,
-    "cpu_usage": 68.84,
-    "memory_usage": 60.86,
-    "bandwidth_usage": 1.75,
-    "diskspace_usage": 30.52
-  }
-}
-```
-- /api/crawl_node
-- This endpoint is used to associate specific nodes with a given crawl, tracking which nodes are participating in the crawl. Call this endpoint once per node at the start of each crawl. This ensures that the system knows which nodes are contributing to which crawls.
-```json
-{
-  "crawl_node": {
-    "crawl_id": 1,
-    "node_id": 10
-  }
+   "time": "2024-08-07T19:28:37.349252",
+   "node_id": "1-0",
+   "cpu_usage": 72.22,
+   "memory_usage": 18.1,
+   "bandwidth_usage": 68.15,
+   "diskspace_usage": 38.36,
+   "crawl_id": 1
 }
 ```
 
@@ -197,31 +180,27 @@ Crawl-Dashboard is a dashboard designed to monitor and visualize web crawling ac
 - This endpoint logs information about each individual request made during a crawl, including proxy details, engine used, and request fingerprints.  Call this endpoint for every request made during the crawl. This could result in a high volume of calls, so ensure your system is capable of handling the load if you're dealing with a large number of requests.
 ```json
 {
-  "request_info": {
-    "time": "2024-08-05T19:36:33.813056",
-    "request_id": 0,
+    "time": "2024-08-07T19:28:37.438950",
+    "request_id": "1-0",
     "crawl_id": 1,
-    "proxy": "proxy_3",
-    "engine": "engine_1",
-    "fingerprint": "fingerprint_75"
-  }
+    "proxy": "proxy_2",
+    "engine": "engine_2",
+    "fingerprint": "fingerprint_12"
 }
 ```
 - /api/response_info
 - This endpoint captures the response details for each request, including status codes, download speeds, bytes downloaded, and whether the request was blocked.  Call this endpoint immediately after each request. Just like request_info, this should be done for every request, ensuring that you capture a complete picture of each interaction with the target servers.
 ```json
 {
-  "response_info": {
-    "time": "2024-08-05T19:36:33.904178",
-    "response_id": 0,
-    "request_id": 0,
-    "web_status_code": 500,
-    "is_blocked": 0,
-    "bytes_downloaded": 2010,
-    "download_speed": 5.77,
+    "time": "2024-08-07T19:28:37.531075",
+    "response_id": "1-0",
+    "request_id": "1-0",
     "crawl_id": 1,
-    "response_time": 1.61
-  }
+    "http_status_code": 500,
+    "is_blocked": 0,
+    "bytes_downloaded": 4124,
+    "download_speed": 7.42,
+    "response_time": 2.5
 }
 ```
 
