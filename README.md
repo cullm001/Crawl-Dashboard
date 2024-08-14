@@ -11,6 +11,7 @@
 ![image](https://github.com/user-attachments/assets/a9ffe184-66a7-42bc-9775-81ee722675f9)
 
 ## Table of Contents
+ - [Introduction](#introduction)
  - [Prerequisites](#prerequisites)
  - [Installation](#installation)
    - [Server](#server)
@@ -19,6 +20,10 @@
  - [Testing](#usage)
    - [Grafana k6](#grafana-k6)
    - [GitHub Actions](#github-actions)
+  
+## Introduction
+This our project, Crawl-Dashboard. It's a real-time monitoring and visualization dashboard designed to give comprehensive insights into web crawling operations. Developed to work seamlessly with web crawlers, this dashboard offers detailed analytics on crawl performance, resource utilization, request and response metrics, and error tracking. With its intuitive Grafana-based interface, users can easily monitor and optimize their web crawling processes, ensuring high efficiency and cost-effectiveness. Crawl-Dashboard is designed to scale with your needs and provide valuable data that drives better decision-making.
+
 ## Prerequisites
 1. Install [node.js and npm](https://nodejs.org/en/download/package-manager)
 
@@ -147,6 +152,7 @@
 ```
 2. Send POST requests to the following API Endpoints
  - /api/crawl_info
+ - This endpoint is used to log the overall statistics of a web crawl, such as the total number of requests, concurrent requests, and related metadata. Call this endpoint once per crawl. Ideally, this should be done at the start of a crawl to initialize the crawl record and again at the end of the crawl to finalize the statistics.
 ```json
 {
   "crawl_info": {
@@ -162,6 +168,7 @@
 }
 ```
  - /api/node_info
+ - This endpoint records the resource usage of individual nodes involved in the crawl, including CPU, memory, bandwidth, and disk space. Call this endpoint periodically during a crawl. The frequency can vary depending on how detailed you want your monitoring to be. For example, you might call it every 5 minutes during active crawling periods to capture resource usage trends.
  ```json
 {
   "node_info": {
@@ -176,6 +183,7 @@
 }
 ```
 - /api/crawl_node
+- This endpoint is used to associate specific nodes with a given crawl, tracking which nodes are participating in the crawl. Call this endpoint once per node at the start of each crawl. This ensures that the system knows which nodes are contributing to which crawls.
 ```json
 {
   "crawl_node": {
@@ -186,6 +194,7 @@
 ```
 
 - /api/request_info
+- This endpoint logs information about each individual request made during a crawl, including proxy details, engine used, and request fingerprints.  Call this endpoint for every request made during the crawl. This could result in a high volume of calls, so ensure your system is capable of handling the load if you're dealing with a large number of requests.
 ```json
 {
   "request_info": {
@@ -199,6 +208,7 @@
 }
 ```
 - /api/response_info
+- This endpoint captures the response details for each request, including status codes, download speeds, bytes downloaded, and whether the request was blocked.  Call this endpoint immediately after each request. Just like request_info, this should be done for every request, ensuring that you capture a complete picture of each interaction with the target servers.
 ```json
 {
   "response_info": {
