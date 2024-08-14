@@ -1,5 +1,5 @@
 
-# Crawl-Dashboard
+# CrawlSense
 
 ### Aggregate Statistics
 ![image](https://github.com/user-attachments/assets/8697304e-2f5f-42dc-bea1-e6427702c6c4)
@@ -22,7 +22,7 @@
    - [GitHub Actions](#github-actions)
   
 ## Introduction
-Crawl-Dashboard is a dashboard designed to monitor and visualize web crawling activities in real-time. It tracks various statistics, including crawl performance, resource usage (CPU, memory, bandwidth), and request/response details. The dashboard uses Grafana to visualize data stored in a MySQL database. This project allows you to see how your web crawlers are performing, identify issues like blocked requests, and analyze overall resource consumption during crawls.
+CrawlSense is a dashboard designed to monitor and visualize web crawling activities in real-time. It tracks various statistics, including crawl performance, resource usage (CPU, memory, bandwidth), and request/response details. The dashboard uses Grafana to visualize data stored in a MySQL database. This project allows you to see how your web crawlers are performing, identify issues like blocked requests, and analyze overall resource consumption during crawls.
 
 ## Prerequisites
 1. Install [node.js and npm](https://nodejs.org/en/download/package-manager)
